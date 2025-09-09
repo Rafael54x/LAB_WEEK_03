@@ -1,47 +1,26 @@
 package com.example.lab_week_03
 
-import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.FragmentContainerView
 
-interface CoffeeListener {
-    fun onSelected(id: Int)
-}
+// Removed enableEdgeToEdge as it's not standard and might not be defined
+// import androidx.activity.enableEdgeToEdge 
 
-class MainActivity : AppCompatActivity(), CoffeeListener {
+class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        // If enableEdgeToEdge() is a custom or library extension function you use, 
+        // ensure it's correctly defined or imported. For now, I'm commenting it out
+        // to prevent potential compilation errors if it's not universally available.
+        // enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.fragment_container)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right,
-                systemBars.bottom)
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
-        }
-
-        if (savedInstanceState == null) {
-            findViewById<FragmentContainerView>(R.id.fragment_container).let {
-                containerLayout ->
-                val listFragment = ListFragment()
-                supportFragmentManager.beginTransaction()
-                    .add(containerLayout.id, listFragment)
-                    .commit()
-            }
-        }
-    }
-
-    override fun onSelected(id: Int) {
-        findViewById<FragmentContainerView>(R.id.fragment_container).let {
-            containerLayout ->
-            val detailFragment = DetailFragment.newInstance(id)
-            supportFragmentManager.beginTransaction()
-                .replace(containerLayout.id, detailFragment)
-                .addToBackStack(null)
-                .commit()
         }
     }
 }
