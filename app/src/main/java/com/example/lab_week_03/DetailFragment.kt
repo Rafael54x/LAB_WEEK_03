@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 
 class DetailFragment : Fragment() {
     private val coffeeTitle: TextView?
@@ -27,10 +29,12 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val coffeeId = arguments?.getInt(COFFEE_ID, 0) ?: 0
         Log.d("DetailFragment", "Received coffeeId: $coffeeId")
-        // Log.d("DetailFragment", "R.id.affogato is: ${R.id.affogato}")
-        // Log.d("DetailFragment", "R.id.americano is: ${R.id.americano}")
-        // Log.d("DetailFragment", "R.id.latte is: ${R.id.latte}")
         setCoffeeData(coffeeId)
+
+        val backButton = view.findViewById<Button>(R.id.back_button)
+        backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
     }
 
     fun setCoffeeData(id: Int){
@@ -46,6 +50,14 @@ class DetailFragment : Fragment() {
             R.id.latte -> {
                 coffeeTitle?.text = getString(R.string.latte_title)
                 coffeeDesc?.text = getString(R.string.latte_desc)
+            }
+            R.id.espresso -> {
+                coffeeTitle?.text = getString(R.string.espresso_title)
+                coffeeDesc?.text = getString(R.string.espresso_desc)
+            }
+            R.id.macchiato -> {
+                coffeeTitle?.text = getString(R.string.macchiato_title)
+                coffeeDesc?.text = getString(R.string.macchiato_desc)
             }
             else -> {
                 // Optional: Handle cases where the ID doesn't match
