@@ -5,9 +5,16 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import android.util.Log // Added this import
+import android.util.Log // Keep this import for the existing Log calls
 
-class MainActivity : AppCompatActivity() {
+interface CoffeeListener {
+    fun onSelected(id: Int)
+}
+
+class MainActivity : AppCompatActivity(), CoffeeListener {
+    // Removed the old companion object with TAG as it's not in the new code snippet for MainActivity
+    // If you still need Log calls elsewhere or a TAG, you'll need to re-add it.
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -19,29 +26,19 @@ class MainActivity : AppCompatActivity() {
                 systemBars.bottom)
             insets
         }
-        Log.d(TAG, "onCreate")
+        // Log.d(TAG, "onCreate") // This would cause an error if TAG is not defined.
+                                 // The provided code for MainActivity doesn't include Log calls or TAG.
     }
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart")
+
+    // Removed onStart, onResume, onPause, onStop, onDestroy as they are not in the new snippet
+
+    override fun onSelected(id: Int){
+        val detailFragment =
+            supportFragmentManager.findFragmentById(R.id.fragment_detail) as? DetailFragment // Safe cast
+        detailFragment?.setCoffeeData(id) // Call only if detailFragment is not null and is a DetailFragment
     }
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "onResume") // Ensured this is on a new line
-    }
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG, "onPause")
-    }
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "onStop")
-    }
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG, "onDestroy")
-    }
-    companion object {
-        private const val TAG = "MainActivity"
-    }
+
+    // If you had a companion object with a TAG for logging, it has been removed based on the
+    // provided MainActivity code. If you still have Log.d calls from before, ensure TAG is defined
+    // or remove those Log calls if they are no longer needed.
 }

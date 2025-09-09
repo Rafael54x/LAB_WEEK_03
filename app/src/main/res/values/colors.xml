@@ -2,4 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+<!-- Incorrect: Missing '#' or invalid characters -->
+    <color name="my_invalid_color">#FF0000</color>
+
+<!-- Correct -->
+    <color name="my_valid_color">#FF0000</color>
 </resources>
