@@ -1,6 +1,7 @@
 package com.example.lab_week_03
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,24 +9,28 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 class DetailFragment : Fragment() {
-    private var param1: String? = null // Consider removing if not used
-    private var param2: String? = null // Consider removing if not used
-
     private val coffeeTitle: TextView?
         get() = view?.findViewById(R.id.coffee_title)
 
     private val coffeeDesc: TextView?
         get() = view?.findViewById(R.id.coffee_desc)
 
-    // Removed boilerplate onCreate, onCreateView as they are not in the provided code
-    // If you need them, you'll have to add them back based on your requirements.
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        // This line is assumed, as it's standard practice, though not explicitly in your snippet
         return inflater.inflate(R.layout.fragment_detail, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val coffeeId = arguments?.getInt(COFFEE_ID, 0) ?: 0
+        Log.d("DetailFragment", "Received coffeeId: $coffeeId")
+        // Log.d("DetailFragment", "R.id.affogato is: ${R.id.affogato}")
+        // Log.d("DetailFragment", "R.id.americano is: ${R.id.americano}")
+        // Log.d("DetailFragment", "R.id.latte is: ${R.id.latte}")
+        setCoffeeData(coffeeId)
     }
 
     fun setCoffeeData(id: Int){
@@ -42,12 +47,22 @@ class DetailFragment : Fragment() {
                 coffeeTitle?.text = getString(R.string.latte_title)
                 coffeeDesc?.text = getString(R.string.latte_desc)
             }
+            else -> {
+                // Optional: Handle cases where the ID doesn't match
+                Log.w("DetailFragment", "Unknown coffee ID: $id")
+                coffeeTitle?.text = "Unknown Coffee"
+                coffeeDesc?.text = "Description not found."
+            }
         }
     }
 
     companion object {
-        // Removed boilerplate newInstance method as it's not in the provided code
-        // If you need it, you'll have to add it back based on your requirements.
-        // Consider if a companion object is needed at all if newInstance is removed.
+        private const val COFFEE_ID = "COFFEE_ID"
+        fun newInstance(coffeeId: Int) =
+            DetailFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(COFFEE_ID, coffeeId)
+                }
+            }
     }
 }
